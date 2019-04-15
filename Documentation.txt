@@ -1,0 +1,75 @@
+Documentation for Linear Regression Class
+
+This class computes the linear relationships for a given data set between specified independendent and 
+dependent variables. The folder contains the class file 'gradient_class.py', a script to generate an
+example data set called 'example_data.py', and a main programme computing linear regression examples 
+'LinearRegression.py'.
+
+The data set should be provided as an n x m numpy array, with n data points and m columns. The m columns 
+contain independent and dependent variables, from left to right with the user specifying the number of 
+independent and dependent variables when defining objects from GradientClass in 'gradient_class.py'.
+
+In the 'LinearRegression.py' file, this is done by specifying the data as text file 'data.dat' and this
+is read into a numpy array. The user then inputs the number of dependent and independent variables. If 
+the user specifies 1 independent variable, a plot of the fit vs data is plotted for each dependent
+variable. Also, the errors are written into the file 'error.dat' and the polynomial for the first (or
+only) dependent is printed to screen.
+
+The 'example_data.py' file generates a data file example, with the 1 indpendent variable case in mind.
+It generates data for the dependent variable with a random linear relationship to a specified independent
+variable column and adds normally distributed noise. n specifies the number of dependent variables and r
+specifies the number of data points.  
+
+The class requires numpy and matplotlib in order to function.
+
+Construction
+
+The class constructor requires both the data provided as a numpy array and a 2D tuple specifying the 
+number of dependent and indpendent variables:
+
+GradientClass obj_name(data, (n_dep, n_ind), optional = tolerance, optional time_step)
+
+N.B n_dep + n_ind = m has to be true and an error is returned if this is not the case
+N.B The constructor not only stores the data but also rescales the data between 0 and 1 to simplify the
+regression computation
+
+The optional tolerance and time_step parameters allow the user to modify the default values of 0.00001
+and 0.0001 respectively. The tolerance provides the convergence criteria for the gradient descent and
+time_step provides the constant step for the descent.
+
+N.B Currently considering a dynamic time_step which changes on each iteration
+
+Methods
+
+.regression(optional = beta)
+
+This method computes the coefficients for the regression. 
+
+The output is a n_dep x (n_indep + 1) array. Each row represents the coefficients for a given dependent
+variable. The ith columns are the coefficients for the ith independent variable up to n_indep. The last 
+column is the overall constant added to this. 
+
+So one can write: y_i = reg[i, j]x_j + reg[i, n_indep]
+
+N.B The repeated indices are summed over and j goes up to n_indep - 1
+
+One can specify a starting point manually using the optional argument beta. However, a default method 
+is included to choose a starting point if no starting point is specified. beta is specified in the same
+as the output of regression - namely n_dep x (n_indep + 1) numpy array.  
+
+.polynomial(i, optional = beta) 
+
+This method uses the regression array to print to screen a string, explicitly writing the linear 
+polynomial for the ith dependent variable. Once more, one can manually specify a starting point.
+
+The output is of the form y_i = b_i + a_j x_j
+
+.plot_graphs(i, optional = beta)
+
+If the data is specified as having only one independent variable, this function plots the linear fit
+to the data for the ith dependent variable. The plot is saved as 'plots.pdf'. Once more, one can manually 
+specify a starting point beta.
+
+.error(optional = beta)
+
+This method computes the error for each dependent variable and outputs to a file 'error.dat'.
